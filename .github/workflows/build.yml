@@ -27,7 +27,10 @@ jobs:
         with:
           packages: make clang-11 libprotobuf23 libssl3 libstdc++-11-dev
           version: 1.0
-      - run: sudo apt-get remove libgcc-12-dev libgcc-13-dev
+      - run: apt-cache show libgcc-11-dev || true
+      - run: apt-cache show libgcc-12-dev || true
+      - run: apt-cache show libgcc-13-dev || true
+      - run: sudo apt-get remove libgcc-13-dev
       - run: clang -v || true
       - run: ls -lh /usr/lib/gcc/x86_64-linux-gnu/ || true
 
