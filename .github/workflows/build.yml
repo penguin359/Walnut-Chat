@@ -19,11 +19,15 @@ jobs:
       - run: dpkg -l '*libstdc++-*-dev*'
       - run: apt-cache search '^clang-.*'
       - run: dpkg -l '*clang*'
+      - run: ls -lh /usr/lib/gcc/x86_64-linux-gnu/ || true
+      - run: clang -v || true
       - name: Install dependencies
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: make clang-11 libprotobuf23 libssl3 libstdc++-11-dev
           version: 1.0
+      - run: clang -v || true
+      - run: ls -lh /usr/lib/gcc/x86_64-linux-gnu/ || true
 
       - name: Configure
         run: ./scripts/Setup.sh
