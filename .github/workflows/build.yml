@@ -17,10 +17,11 @@ jobs:
 
       - run: apt-cache search 'libstdc\+\+-.*-dev'
       - run: dpkg -l '*libstdc++-*-dev*'
+      - run: dpkg -l '*clang*'
       - name: Install dependencies
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: make clang libprotobuf23 libssl3 libstdc++-11-dev
+          packages: make clang-11 libprotobuf23 libssl3 libstdc++-11-dev
           version: 1.0
 
       - name: Configure
