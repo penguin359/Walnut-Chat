@@ -1,0 +1,15 @@
+image: Visual Studio 2022
+init:
+- ps: |-
+    echo "Installng Vulkan SDK..."
+    Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.3.261.1/windows/VulkanSDK-1.3.261.1-Installer.exe" -OutFile "a.exe"
+    .\a.exe --accept-licenses --default-answer --confirm-command install
+    Remove-Item -LiteralPath .\a.exe
+
+environment:
+  VULKAN_SDK: C:\VulkanSDK\1.3.261.1
+
+install:
+- cmd: |-
+    git submodule update --init --recursive 
+    Walnut\vendor\bin\premake\Windows\premake5.exe --file=Build.lua vs2022
