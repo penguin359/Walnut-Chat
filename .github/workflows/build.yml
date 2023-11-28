@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+    branches: '*'
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - run: apt-cache search 'libstdc\+\+-.*-dev'
+      - run: dpkg -l '*libstdc++-*-dev*'
+      - run: apt-cache search '^clang-.*'
+      - run: dpkg -l '*clang*'
+      - run: dpkg -l '*libgcc*'
+      - run: ls -lh /usr/lib/gcc/x86_64-linux-gnu/ || true
+      - run: clang -v || true
+      - name: Install dependencies
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: make clang-11 libprotobuf23 libssl3 libstdc++-11-dev
+          version: 1.0
+      - run: apt-cache show libgcc-11-dev || true
+      - run: apt-cache show libgcc-12-dev || true
+      - run: apt-cache show libgcc-13-dev || true
+      - run: sudo apt-get remove libgcc-13-dev
+      - run: clang -v || true
+      - run: ls -lh /usr/lib/gcc/x86_64-linux-gnu/ || true
+
+      - name: Configure
+        run: ./scripts/Setup.sh
+
+      - name: Build
+        run: make
